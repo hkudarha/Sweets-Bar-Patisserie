@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@import "swiper/css";
+@import "swiper/css/pagination";
+
+@font-face {
+  font-family: 'myfont';
+  src: url('./assets/Garet-Book.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'myfont2';
+  src: url('./assets/Garet-Heavy.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+body{
+    font-family: myfont;
+}
+p{
+    font-size: 1rem;
+}
+h1{
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #0c4a61;
+}
+h2{
+    font-size: 1.5rem;
+    font-weight:bold;
+}
+button{
+    background-color: #0e4d65;
+    font-size: 1.2rem;
+    color: white;
+    border-radius: 10px;
+    padding: 0.6rem 2rem;
+}
+
+.input1{
+    width: 100%;
+  border: 1px solid #d1d5db; 
+  border-radius: 0.5rem;     
+  padding: 0.75rem 1rem;
+}
+
+.custom-button {
+    background-color: white;
+    color: black;
+  flex: 1;
+  padding: 0.5rem 1rem;          
+  border-radius: 0.5rem;         
+  border: 1px solid #d1d5db;     
+  font-size: 0.875rem;          
+  transition: background-color 0.2s ease;
+}
+
+.custom-button:hover {
+  background-color: #f3f4f6;    
+}
