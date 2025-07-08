@@ -56,7 +56,7 @@ const productData = [
 
 const ProductTypes = () => {
   return (
-    <div className="px-[2rem] sm:px-[4rem] py-6">
+    <div data-aos="fade-up" className="px-[2rem] sm:px-[4rem] py-6">
       <div className="bg-[#e7edef] sm:p-[4rem] p-[1rem] rounded-2xl grid grid-cols-1 gap-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {productData.slice(0, 2).map((item, idx) => (

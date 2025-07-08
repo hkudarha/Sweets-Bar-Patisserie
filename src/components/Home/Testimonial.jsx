@@ -35,7 +35,7 @@ const Testimonial = () => {
     };
 
     return (
-        <div className="px-[2rem] sm:px-[4rem] py-8">
+        <div data-aos="fade-up" className="px-[2rem] sm:px-[4rem] py-8">
             <div className="mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <h2 className="">Customer Testimonial</h2>
                 <button

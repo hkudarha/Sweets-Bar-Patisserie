@@ -1,34 +1,13 @@
 import React from 'react'
-import { FaSmile, FaMapMarkerAlt, FaTruck, FaUsers } from "react-icons/fa";
+import Achievements from './Achievements';
 
 
 const About = () => {
 
-  const stats = [
-    {
-      icon: <FaSmile className="text-4xl text-gray-800" />,
-      value: "20+ Mn Smiles",
-      label: "Delivered",
-    },
-    {
-      icon: <FaMapMarkerAlt className="text-4xl text-gray-800" />,
-      value: "20000+",
-      label: "Pincodes Covered",
-    },
-    {
-      icon: <FaTruck className="text-4xl text-gray-800" />,
-      value: "620+ Cities",
-      label: "Enjoying same-day delivery",
-    },
-    {
-      icon: <FaUsers className="text-4xl text-gray-800" />,
-      value: "1100+ Skilled",
-      label: "Chefs & Florists On Board",
-    },
-  ];
+  
 
   return (
-    <div className='px-[2rem] sm:px-[4rem] py-8'>
+    <div data-aos="fade-up" className='px-[2rem] sm:px-[4rem] py-8'>
       <div className='space-y-4'>
         <h2>#RedefiningGifting</h2>
         <p>In a fast-paced world where meaningful moments with loved ones
@@ -58,18 +37,7 @@ const About = () => {
           Sweets Bar Patisserie , when words are not enough
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {stats.map((item, index) => (
-            <div
-              key={index}
-              className="bg-gray-100 rounded-xl flex flex-col items-center justify-center text-center p-6 shadow-sm"
-            >
-              <div className="mb-4">{item.icon}</div>
-              <h3 className="text-lg font-semibold">{item.value}</h3>
-              <p className="text-gray-600">{item.label}</p>
-            </div>
-          ))}
-        </div>
+       <Achievements/>
       </section>
     </div>
   )

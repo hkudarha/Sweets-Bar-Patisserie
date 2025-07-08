@@ -17,7 +17,7 @@ const Slider = () => {
       ];
 
   return (
-    <div className="px-[2rem] sm:px-[4rem] py-6">
+    <div data-aos="fade-up" className="px-[2rem] sm:px-[4rem] py-6">
           <Swiper
             modules={[Pagination, Autoplay]}
             pagination={{ clickable: true }}

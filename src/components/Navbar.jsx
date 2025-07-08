@@ -1,22 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch,FaMapMarkerAlt, FaGift, FaShoppingBag, FaUser, FaBars, FaPen, FaTimes, FaQuestionCircle, FaUserCircle, FaPhone, FaWhatsapp } from 'react-icons/fa';
+import {
+  FaSearch, FaMapMarkerAlt, FaGift, FaShoppingBag, FaUser, FaBars,
+  FaPen, FaTimes, FaQuestionCircle, FaUserCircle, FaPhone, FaWhatsapp, FaHeart
+} from 'react-icons/fa';
 import logo from "../assets/logo_basic.png";
+import LocationPopup from './Popup/LocationPopup';
+import GiftFinder from './Popup/GiftFinder';
 
 const Navbar = () => {
   const navigate = useNavigate();
-
-  const navItems = [
-    { label: "Track Order", icon: FaMapMarkerAlt, path: "/track-order" },
-    { label: "Gift Finder", icon: FaGift, path: "/gift-finder" },
-    { label: "Cart", icon: FaShoppingBag, path: "/cart", badge: 0 },
-    { label: "Sign In", icon: FaUser, path: "/signup" },  
-    { label: "More", icon: FaBars, path: "#" },
-  ];
-
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [showMobileMore, setShowMobileMore] = useState(false);
+  const [showLocationPopup, setShowLocationPopup] = useState(false);
+  const [showGiftFinderPopup, setShowGiftFinderPopup] = useState(false);
+
+  const [location, setLocation] = useState("");
+  const [loadingLocation, setLoadingLocation] = useState(true);
+
+  useEffect(() => {
+    const savedLocation = localStorage.getItem("userLocation") || "Bhopal, India";
+    setLocation(savedLocation);
+    setLoadingLocation(false);
+  }, []);
+
+  const navItems = [
+    { label: "Track Order", icon: FaMapMarkerAlt, path: "/track-order" },
+    { label: "Gift Finder", icon: FaGift },
+    { label: "Cart", icon: FaShoppingBag, path: "/cart", badge: 0 },
+    { label: "Sign In", icon: FaUser, path: "/signin" },
+    { label: "More", icon: FaBars },
+  ];
 
   const words = ['Cakes', 'Gifts', 'Plants', 'Combos'];
   const [placeholder, setPlaceholder] = useState('');
@@ -43,6 +58,10 @@ const Navbar = () => {
     }
   }, [subIndex, index, deleting]);
 
+  const handleEditLocation = () => {
+    setShowLocationPopup(true);
+  };
+
   return (
     <nav className='px-[2rem] sm:px-[4rem] py-2 flex flex-wrap items-center justify-between bg-white'>
       <div className="flex items-center gap-2">
@@ -51,23 +70,25 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Location Selector - Desktop */}
+      {/* Desktop location display */}
       <div className="hidden md:flex gap-[5rem] items-center bg-blue-100 px-3 py-[1rem] rounded-md text-sm text-gray-700">
         <div className="gap-2 flex items-center">
-          <span>🇳🇪</span>
-          <span>Deliver To ?</span>
+          <span>🇮🇳</span>
+          <span>
+            {loadingLocation ? "Detecting location..." : `Deliver To ${location}`}
+          </span>
         </div>
         <FaPen
           className="text-xs text-gray-500 cursor-pointer"
-          onClick={() => navigate('/select-location')}
+          onClick={handleEditLocation}
         />
       </div>
 
-      {/* Location Icon - Mobile */}
+      {/* Mobile location icon */}
       <div className="md:hidden">
         <FaMapMarkerAlt
           className="text-xl text-gray-600 cursor-pointer"
-          onClick={() => navigate('/select-location')}
+          onClick={handleEditLocation}
         />
       </div>
 
@@ -106,9 +127,12 @@ const Navbar = () => {
                 <span className="text-xs mt-1">{item.label}</span>
 
                 {showMore && (
-                  <div className="absolute top-[2rem] right-0 bg-white border rounded shadow-lg text-left w-40 z-10">
+                  <div className="absolute top-[2rem] right-0 bg-white border rounded shadow-lg text-left w-44 z-10">
                     <Link to="/about" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-sm text-gray-700">
                       <FaUserCircle /> About Us
+                    </Link>
+                    <Link to="/favourites" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-sm text-gray-700">
+                      <FaHeart /> Favourites
                     </Link>
                     <Link to="/contact" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-sm text-gray-700">
                       <FaPhone /> Contact Us
@@ -129,7 +153,13 @@ const Navbar = () => {
             <div
               key={index}
               className="relative flex flex-col items-center cursor-pointer"
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                if (item.label === "Gift Finder") {
+                  setShowGiftFinderPopup(true);
+                } else {
+                  navigate(item.path);
+                }
+              }}
             >
               <Icon className="text-[1.3rem]" />
               {isCart && (
@@ -166,6 +196,9 @@ const Navbar = () => {
                       <Link to="/about" onClick={() => setShowMobileMenu(false)} className="flex items-center gap-2 px-3 py-1 hover:bg-gray-100 rounded">
                         <FaUserCircle /> About Us
                       </Link>
+                      <Link to="/favourites" onClick={() => setShowMobileMenu(false)} className="flex items-center gap-2 px-3 py-1 hover:bg-gray-100 rounded">
+                        <FaHeart /> Favourites
+                      </Link>
                       <Link to="/contact" onClick={() => setShowMobileMenu(false)} className="flex items-center gap-2 px-3 py-1 hover:bg-gray-100 rounded">
                         <FaPhone /> Contact Us
                       </Link>
@@ -185,7 +218,11 @@ const Navbar = () => {
               <div
                 key={index}
                 onClick={() => {
-                  navigate(item.path);
+                  if (item.label === "Gift Finder") {
+                    setShowGiftFinderPopup(true);
+                  } else {
+                    navigate(item.path);
+                  }
                   setShowMobileMenu(false);
                 }}
                 className="relative flex items-center gap-3 px-3 py-2 rounded-md bg-gray-50"
@@ -201,6 +238,14 @@ const Navbar = () => {
             );
           })}
         </div>
+      )}
+
+      {/* Popups */}
+      {showLocationPopup && (
+        <LocationPopup onClose={() => setShowLocationPopup(false)} />
+      )}
+      {showGiftFinderPopup && (
+        <GiftFinder onClose={() => setShowGiftFinderPopup(false)} />
       )}
     </nav>
   );

@@ -30,7 +30,7 @@ const FaqSection = () => {
   };
 
   return (
-    <div className="py-[4rem] px-[4rem] sm:px-[8rem]">
+    <div data-aos="fade-up" className="py-[4rem] px-[4rem] sm:px-[8rem]">
       <div className="text-sm text-gray-500 mb-2">
         <Link to="/" className="hover:underline text-blue-600">Home</Link>
         <span className="mx-1">{'>'}</span> FAQs

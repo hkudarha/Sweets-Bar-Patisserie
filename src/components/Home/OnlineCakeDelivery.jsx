@@ -20,33 +20,33 @@ const cakes = [
 const OnlineCakeDelivery = () => {
   return (
     <div className="px-[2rem] sm:px-[4rem] py-8">
-      
-      <div className="text-center mb-6">
+
+      <div data-aos="fade-up" className="text-center mb-6">
         <h2>Online Cake Delivery</h2>
         <p>
           Baked Fresh, Delivered Fresh
         </p>
       </div>
 
-      
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-  {cakes.map((cake, index) => (
-    <Link
-      to={cake.link}
-      key={index}
-      className="flex flex-col items-center group cursor-pointer"
-    >
-      <div className="overflow-hidden rounded-xl w-full">
-        <img
-          src={cake.image}
-          alt={cake.name}
-          className="rounded-xl object-cover w-full transform transition-transform duration-300 group-hover:scale-105"
-        />
+
+      <div data-aos="fade-up" className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+        {cakes.map((cake, index) => (
+          <Link
+            to={cake.link}
+            key={index}
+            className="flex flex-col items-center group cursor-pointer"
+          >
+            <div className="overflow-hidden rounded-xl w-full">
+              <img
+                src={cake.image}
+                alt={cake.name}
+                className="rounded-xl object-cover w-full transform transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+            <p className="mt-2 text-sm font-medium">{cake.name}</p>
+          </Link>
+        ))}
       </div>
-      <p className="mt-2 text-sm font-medium">{cake.name}</p>
-    </Link>
-  ))}
-</div>
 
     </div>
   );

@@ -8,7 +8,7 @@ const FlowerAura = () => {
   };
 
   return (
-    <div className=" mx-auto px-[2rem] sm:px-[4rem] py-[2rem]">
+    <div data-aos="fade-up" className=" mx-auto px-[2rem] sm:px-[4rem] py-[2rem]">
       <h3 className="text-xl font-semibold mb-2">
         FlowerAura: Send Flowers, Cakes, Gifts & Plants Online Across India
       </h3>

@@ -63,3 +63,19 @@ button{
 .custom-button:hover {
   background-color: #f3f4f6;    
 }
+
+
+.custom-button2{
+  padding: 0.15rem 0.5rem;      
+  background-color: #0e4d65;
+  color: #ffffff;               
+  border-radius: 0.25rem;       
+}
+
+.swiper-pagination-bullet {
+  background-color: #000;
+  opacity: 0.3;
+}
+.swiper-pagination-bullet-active {
+  opacity: 1;
+}

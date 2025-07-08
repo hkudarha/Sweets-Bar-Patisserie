@@ -23,7 +23,7 @@ const TrackYourOrder = () => {
   };
 
   return (
-    <div className="bg-[#f4f7f8] py-[2rem] flex flex-col items-center justify-center py-[3 rem]">
+    <div data-aos="fade-up" className="bg-[#f4f7f8] py-[2rem] flex flex-col items-center justify-center py-[3 rem]">
       <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4 text-[#0c4a61]">
         Track Your Sweets Bar Patisserie  Order
       </h1>

@@ -11,7 +11,6 @@ const Footer = () => {
                     <div className="grid gap-[4rem] text-[1rem]  text-sm text-gray-800
                 grid-cols-1 md:grid-cols-3">
 
-                        {/* First: Always full width on mobile */}
                         <div className="flex flex-col sm:gap-[0.5rem]">
                             <Link to="about-us">About Us</Link>
                             <Link to="sell-with-us">Sell With Us</Link>
@@ -20,7 +19,6 @@ const Footer = () => {
                             <Link to="retail-stores">Retails Stores</Link>
                         </div>
 
-                        {/* Wrapper for second and third side by side */}
                         <div className="grid grid-cols-2 gap-[4rem] md:contents">
                             <div className="flex flex-col sm:gap-[0.5rem]">
                                 <Link to="media">Media</Link>
@@ -59,11 +57,11 @@ const Footer = () => {
                                     alt="Google Play"
                                     className="h-10"
                                 />
-                                <img
+                                {/* <img
                                     src="https://imgcdn.Sweets Bar Patisserie .com/fa-media/app_store.svg?tr=w-150,h-44,dpr-1.5,q-70"
                                     alt="App Store"
                                     className="h-10"
-                                />
+                                /> */}
                             </div>
                         </div>
 

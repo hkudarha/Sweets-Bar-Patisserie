@@ -31,12 +31,12 @@ const ShopByOccasions = () => {
 
   return (
     <div className="px-[2rem] sm:px-[4rem] py-8">
-      <div className="text-center mb-6">
+      <div data-aos="fade-up" className="text-center mb-6">
         <h2 className="">Shop By Occasions & Relations</h2>
         <p className="text-gray-600">Surprise Your Loved Ones</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {cards.map((card, index) => (
           <Link
             key={index}

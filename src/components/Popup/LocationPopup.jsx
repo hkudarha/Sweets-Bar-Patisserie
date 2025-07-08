@@ -3,17 +3,47 @@ import { FaTimes, FaMapMarkerAlt } from 'react-icons/fa';
 
 const LocationPopup = ({ onClose }) => {
   const [location, setLocation] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleUseCurrentLocation = () => {
     if ('geolocation' in navigator) {
+      setLoading(true);
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setLocation(`Lat: ${latitude.toFixed(4)}, Lng: ${longitude.toFixed(4)}`);
+
+          fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              const addr = data.address;
+
+              const cleanName = [
+                addr.road,
+                addr.neighbourhood,
+                addr.suburb,
+                addr.city || addr.town || addr.village,
+                addr.state,
+                addr.country,
+                `(${latitude.toFixed(4)}, ${longitude.toFixed(4)})`
+              ]
+                .filter(Boolean)
+                .join(', ');
+
+              setLocation(cleanName);
+              setLoading(false);
+            })
+            .catch((err) => {
+              console.error('Error reverse geocoding:', err);
+              alert('Unable to get address name.');
+              setLoading(false);
+            });
         },
         (error) => {
           console.error('Error fetching location:', error);
           alert('Please enable location services.');
+          setLoading(false);
         }
       );
     } else {
@@ -21,23 +51,20 @@ const LocationPopup = ({ onClose }) => {
     }
   };
 
+
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
       <div className="bg-white w-full max-w-md rounded-xl p-4 sm:p-6 relative shadow-lg max-h-[90vh] overflow-y-auto">
-        
-        {/* Close Icon */}
         <FaTimes
-          className="absolute top-3 right-3 text-gray-500 text-lg cursor-pointer"
+        className="absolute top-3 right-3 text-gray-500 text-lg cursor-pointer"
           onClick={onClose}
         />
 
-        {/* Title */}
         <h2 className="text-base sm:text-lg font-semibold text-center">Enter delivery location</h2>
         <p className="text-xs sm:text-sm text-blue-500 text-center mt-1">
           30-min delivery now live in some areas
         </p>
 
-        {/* Input box */}
         <div className="flex items-center mt-4 border border-gray-300 rounded-md overflow-hidden">
           <div className="flex items-center px-3 bg-gray-50">
             <span className="text-lg sm:text-xl">🇮🇳</span>
@@ -52,14 +79,14 @@ const LocationPopup = ({ onClose }) => {
           />
         </div>
 
-        {/* Use current location button */}
         <div className="mt-4 text-center">
           <button
             className="text-blue-600 text-sm font-medium flex items-center justify-center gap-2 mx-auto"
             onClick={handleUseCurrentLocation}
+            disabled={loading}
           >
             <FaMapMarkerAlt />
-            Use Current Location
+            {loading ? "Fetching Location..." : "Use Current Location"}
           </button>
         </div>
       </div>

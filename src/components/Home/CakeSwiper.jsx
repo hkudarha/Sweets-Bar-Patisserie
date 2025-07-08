@@ -19,7 +19,7 @@ const CakeSwiper = () => {
   ];
 
   return (
-    <div className="px-[2rem] sm:px-[4rem] pt-[2rem]">
+    <div data-aos="fade-up" className="px-[2rem] sm:px-[4rem] pt-[2rem]">
       <Swiper
         modules={[Pagination, Autoplay]}
         pagination={{ clickable: true }}
