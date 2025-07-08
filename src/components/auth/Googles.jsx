@@ -1,7 +1,7 @@
 import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
 
-const Google = () => {
+const Googles = () => {
   const handleLoginSuccess = async (credentialResponse) => {
     const token = credentialResponse.credential;
     console.log("Google JWT Token:", token);
@@ -14,4 +14,4 @@ const Google = () => {
         <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />   
   );
 };
-export default Google;
+export default Googles;

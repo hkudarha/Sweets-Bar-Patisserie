@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import Google from "./google";
 import img from "../../assets/flower_login_bg.avif";
 import SliderLogin from "./Sliderlogin";
+import Googles from "./Googles";
 
 const SignIn = ({ onClose }) => {
   const [email, setEmail] = useState("");
@@ -84,7 +84,7 @@ const SignIn = ({ onClose }) => {
             </div>
 
             <GoogleOAuthProvider clientId="255480341544-n4jfg032c2lbleacmf1ericjgvrd2kv2.apps.googleusercontent.com">
-              <Google />
+              <Googles />
             </GoogleOAuthProvider>
 
             <div className="text-xs text-gray-400 mt-4">
