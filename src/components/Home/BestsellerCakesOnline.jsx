@@ -11,7 +11,7 @@ const BestsellerCakesOnline = () => {
             <div className="mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <div >
                     <h2>Best Selling Flowers & Gifts</h2>
-                    <p>
+                    <p className='text-gray-500'>
                         Surprise Your Loved Ones
                     </p>
                 </div>

@@ -34,8 +34,8 @@ const testimonials = [
 
 const SliderLogin = () => {
   return (
-    <div className="w-full max-w-md mx-auto mt-8">
-      <h3 className="text-lg font-semibold mb-4">What People Say</h3>
+    <div className="w-full max-w-md mx-auto mt-[0.6rem]">
+      <h5 className=" font-semibold mb-[1rem]">What People Say</h5>
       <Swiper
        modules={[Pagination, Autoplay]}
         pagination={{ clickable: true }}
@@ -49,7 +49,7 @@ const SliderLogin = () => {
       >
         {testimonials.map((testimonial) => (
           <SwiperSlide key={testimonial.id}>
-            <div className="border border-gray-300 rounded p-4 flex items-center gap-4">
+            <div className="border border-gray-300 rounded p-[1rem] flex items-center gap-4">
               <img
                 src={testimonial.image}
                 alt={testimonial.name}

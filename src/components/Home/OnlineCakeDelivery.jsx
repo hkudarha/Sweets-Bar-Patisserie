@@ -23,7 +23,7 @@ const OnlineCakeDelivery = () => {
 
       <div data-aos="fade-up" className="text-center mb-6">
         <h2>Online Cake Delivery</h2>
-        <p>
+        <p className='text-gray-500'>
           Baked Fresh, Delivered Fresh
         </p>
       </div>

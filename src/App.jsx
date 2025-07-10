@@ -1,60 +1,58 @@
-import { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import AOS from "aos";
-import "aos/dist/aos.css";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
-import './App.css'
-import Home from './components/Home';
-import About from './components/About';
-import Contact from './components/Contact';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import TrackYourOrder from './components/TrackOrder/TrackYourOrder';
-import FaqSection from './components/More/FaqSection';
-import SignIn from './components/auth/SignIn';
-import GiftFinder from './components/Popup/GiftFinder';
-import LocationPopup from './components/Popup/LocationPopup';
-import Cart from './components/Cart/Cart';
-import Favourites from './components/More/Favourites';
-import ProductDetails from './components/Home/ProductDetails';
+import Home from "./components/Home";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import TrackYourOrder from "./components/TrackOrder/TrackYourOrder";
+import FaqSection from "./components/More/FaqSection";
+import Cart from "./components/Cart/Cart";
+import Favourites from "./components/More/Favourites";
+import ProductDetails from "./components/Home/ProductDetails";
+import UserDashboard from "./components/user/UserDashboard";
+import AdminDashboard from "./components/admin/AdminDashboard";
+import SignIn from "./components/auth/SignIn";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    AOS.init({
-      duration: 1000, 
-      delay: 300,
-    });
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+    if (savedUser) {
+      setUser(savedUser);
+    }
   }, []);
 
   return (
-    <>
-      <Router>
-     <Navbar/>
-
+    <Router>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/track-order" element={<TrackYourOrder/>} />  
-        <Route path="/faq" element={<FaqSection/>} />  
-        <Route path="/contact" element={<Contact/>} />
-        <Route path="/about" element={<About/>} />
-        <Route path="/signin" element={<SignIn/>} />
-        {/* <Route path="/gift-finder" element={<GiftFinder />} /> */}
-        {/* <Route path="/select-location" element={<LocationPopup />} /> */}
-
-        <Route path="/favourites" element={<Favourites/>} />
-        <Route path="/cart" element={<Cart/>} />
-
-
+        <Route path="/" element={<Home />} />
+        <Route path="/track-order" element={<TrackYourOrder />} />
+        <Route path="/faq" element={<FaqSection />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/favouites" element={<Favourites />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route
+          path="/login"
+          element={<SignIn onSuccess={setUser} onClose={() => {}} />}
+        />
 
+        {user?.role === "admin" && (
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        )}
+        {user?.role === "user" && (
+          <Route path="/user-dashboard" element={<UserDashboard user={user} />} />
+        )}
       </Routes>
-      <Footer/>
+      <Footer />
     </Router>
-    </>
-  )
+  );
 }
 
-export default App
+export default App;

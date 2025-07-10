@@ -10,11 +10,11 @@ const GiftFinder = ({ onClose }) => {
   const [filteredCities, setFilteredCities] = useState(cities);
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
+  const [showCalendar, setShowCalendar] = useState(false);
   const [showOccasionDropdown, setShowOccasionDropdown] = useState(false);
   const [selectedOccasion, setSelectedOccasion] = useState('');
 
   const occasionRef = useRef(null);
-
   const today = new Date();
   const tomorrow = new Date();
   tomorrow.setDate(today.getDate() + 1);
@@ -31,18 +31,17 @@ const GiftFinder = ({ onClose }) => {
   }, [cityInput]);
 
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
-      <div className="relative max-w-md mx-auto mt-10 bg-white rounded-2xl py-[1rem] px-[4rem] space-y-3">
-        {/* Close Button */}
+    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-auto'>
+      <div className="relative w-full max-w-md mx-auto bg-white rounded-2xl py-4 px-6 space-y-2">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-xl"
+          className="absolute cursor-pointer top-2 right-2 text-gray-600 hover:text-red-500 text-xl"
         >
           <IoClose />
         </button>
 
-        <h2 className="text-center text-[#0e4d65]">Gift Finder</h2>
-        <p className="text-center">
+        <h2 className="text-center text-[#0e4d65] text-lg font-semibold">Gift Finder</h2>
+        <p className="text-center text-gray-500 text-sm mb-4">
           Find the Perfect Gift in Just <span className="underline">3 mins</span>
         </p>
 
@@ -78,33 +77,53 @@ const GiftFinder = ({ onClose }) => {
           </div>
         </div>
 
+        {/* Date Selection */}
         <div>
-          <label className="block text-sm font-medium mb-2">When should it arrive?</label>
-          <div className="flex gap-3">
+          <label className="block text-sm font-medium mb-1">When should it arrive?</label>
+          <div className="flex flex-col sm:flex-row gap-2">
             <button
               onClick={() => setSelectedDate(formattedToday)}
-              className="custom-button"
+              className={`custom-button w-full sm:w-auto ${selectedDate === formattedToday ? 'bg-blue-100' : ''}`}
             >
               Today<br /><span className="font-semibold">{formattedToday.slice(8, 10)} {today.toLocaleString('default', { month: 'short' })}</span>
             </button>
             <button
               onClick={() => setSelectedDate(formattedTomorrow)}
-              className="custom-button"
+              className={`custom-button w-full sm:w-auto ${selectedDate === formattedTomorrow ? 'bg-blue-100' : ''}`}
             >
               Tomorrow<br /><span className="font-semibold">{formattedTomorrow.slice(8, 10)} {tomorrow.toLocaleString('default', { month: 'short' })}</span>
             </button>
-            <label className="flex-1 relative cursor-pointer text-center border rounded-lg py-2 hover:bg-gray-100 text-sm">
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="cursor-pointer outline-0"
-                min={formattedToday}
-              />
-            </label>
+
+            {/* Custom Calendar */}
+            <div className="relative w-full sm:w-auto">
+              <button
+                onClick={() => setShowCalendar(!showCalendar)}
+                className="custom-button w-full"
+              >
+                {selectedDate
+                  ? `${selectedDate.slice(8, 10)}-${selectedDate.slice(5, 7)}-${selectedDate.slice(0, 4)}`
+                  : "Select Date"}
+              </button>
+
+              {showCalendar && (
+                <div className="absolute z-10 bg-white border rounded-lg mt-2 shadow p-2 w-full sm:w-56">
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => {
+                      setSelectedDate(e.target.value);
+                      setShowCalendar(false);
+                    }}
+                    className="cursor-pointer outline-0 w-full text-center"
+                    min={formattedToday}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
+        {/* Occasion Selection */}
         <div ref={occasionRef}>
           <label className="block text-sm font-medium mb-1">Select Occasion</label>
           <div
@@ -119,7 +138,7 @@ const GiftFinder = ({ onClose }) => {
             </svg>
           </div>
           {showOccasionDropdown && (
-            <ul className="mt-1 border rounded-lg max-h-40 overflow-y-auto bg-white shadow absolute z-10">
+            <ul className="mt-1 border rounded-lg max-h-40 overflow-y-auto bg-white shadow absolute z-10 w-full">
               {occasions.map((item, i) => (
                 <li
                   key={i}
@@ -136,8 +155,9 @@ const GiftFinder = ({ onClose }) => {
           )}
         </div>
 
+        {/* Submit */}
         <button
-          className="w-full"
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
           onClick={() => alert(`City: ${selectedCity || cityInput}, Date: ${selectedDate}, Occasion: ${selectedOccasion}`)}
         >
           Find Gifts

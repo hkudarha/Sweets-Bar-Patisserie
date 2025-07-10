@@ -33,7 +33,7 @@ const ShopByOccasions = () => {
     <div className="px-[2rem] sm:px-[4rem] py-8">
       <div data-aos="fade-up" className="text-center mb-6">
         <h2 className="">Shop By Occasions & Relations</h2>
-        <p className="text-gray-600">Surprise Your Loved Ones</p>
+        <p className="text-gray-500">Surprise Your Loved Ones</p>
       </div>
 
       <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
