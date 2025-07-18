@@ -40,14 +40,14 @@ const Contact = () => {
             </span>
           </a>
 
-          <div className="flex flex-col bg-white rounded-md px-4 py-3 shadow-sm">
-            <div className="flex items-start mb-3">
-              <FaMapMarkerAlt className="text-xl text-gray-700 mt-1 mr-3" />
-              <div className="text-sm text-gray-700 font-medium">
-                Address:{" "}
-                <span className="font-bold">
-                  {" "}Shop NO.- 5 and 6, Plot no.130, Birla Mandir Rd, Near Malviya Complex, Roshanpura, Malviya Nagar, Bhopal, Madhya Pradesh 462003
-                </span>
+              <div className="flex flex-col bg-white rounded-md px-4 py-3 shadow-sm">
+                    <div className="flex items-start mb-3">
+                      <FaMapMarkerAlt className="text-xl text-gray-700 mt-1 mr-3" />
+                      <div className="text-sm text-gray-700 font-medium">
+                        Address:{" "}
+                        <span className="font-bold">
+                          {" "}Shop NO.- 5 and 6, Plot no.130, Birla Mandir Rd, Near Malviya Complex, Roshanpura, Malviya Nagar, Bhopal, Madhya Pradesh 462003
+                        </span>
               </div>
             </div>
             <iframe

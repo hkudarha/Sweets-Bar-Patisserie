@@ -1,13 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  FaSearch, FaMapMarkerAlt, FaGift, FaShoppingBag, FaUser, FaBars,
-  FaPen, FaTimes, FaQuestionCircle, FaUserCircle, FaPhone, FaWhatsapp, FaHeart
-} from 'react-icons/fa';
+  FaSearch,
+  FaMapMarkerAlt,
+  FaGift,
+  FaShoppingBag,
+  FaUser,
+  FaBars,
+  FaPen,
+  FaTimes,
+  FaQuestionCircle,
+  FaUserCircle,
+  FaPhone,
+  FaWhatsapp,
+  FaHeart,
+} from "react-icons/fa";
 import logo from "../assets/logo_basic.png";
-import LocationPopup from './Popup/LocationPopup';
-import GiftFinder from './Popup/GiftFinder';
-import SignIn from './auth/SignIn';
+import LocationPopup from "./Popup/LocationPopup";
+import GiftFinder from "./Popup/GiftFinder";
+import SignIn from "./auth/SignIn";
+
+const navItems = [
+  { label: "Track Order", icon: FaMapMarkerAlt, path: "/track-order" },
+  { label: "Gift Finder", icon: FaGift },
+  { label: "Cart", icon: FaShoppingBag, path: "/cart", badge: 0 },
+  { label: "Sign In", icon: FaUser },
+  { label: "More", icon: FaBars },
+];
+
+const words = ["Cakes", "Gifts", "Plants", "Combos"];
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -17,40 +38,36 @@ const Navbar = () => {
   const [showGiftFinderPopup, setShowGiftFinderPopup] = useState(false);
   const [showSignInPopup, setShowSignInPopup] = useState(false);
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
-
   const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("user"));
-    if (savedUser && !currentUser) {
-      setCurrentUser(savedUser);
-    }
-  }, [currentUser]);
 
   const [location, setLocation] = useState("");
   const [loadingLocation, setLoadingLocation] = useState(true);
 
-  useEffect(() => {
-    const savedLocation = localStorage.getItem("userLocation") || "Bhopal, India";
-    setLocation(savedLocation);
-    setLoadingLocation(false);
-  }, []);
-
-  const navItems = [
-    { label: "Track Order", icon: FaMapMarkerAlt, path: "/track-order" },
-    { label: "Gift Finder", icon: FaGift },
-    { label: "Cart", icon: FaShoppingBag, path: "/cart", badge: 0 },
-    { label: currentUser ? "My Account" : "Sign In", icon: FaUser },
-    { label: "More", icon: FaBars },
-  ];
-
-  const words = ['Cakes', 'Gifts', 'Plants', 'Combos'];
-  const [placeholder, setPlaceholder] = useState('');
+  const [placeholder, setPlaceholder] = useState("");
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [deleting, setDeleting] = useState(false);
-
   const [searchQuery, setSearchQuery] = useState("");
+
+
+  useEffect(() => {
+    try {
+      const savedUser = JSON.parse(localStorage.getItem("user"));
+      if (savedUser && !currentUser) {
+        setCurrentUser(savedUser);
+      }
+    } catch {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    const savedLocation =
+      localStorage.getItem("userLocation") || "Bhopal, India";
+    setLocation(savedLocation);
+    setLoadingLocation(false);
+  }, []);
 
   useEffect(() => {
     const currentWord = words[index];
@@ -73,6 +90,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("dashboardReloaded");
     setCurrentUser(null);
     setShowAccountDropdown(false);
     navigate("/");
@@ -86,6 +105,12 @@ const Navbar = () => {
       setShowSignInPopup(true);
     } else if (item.label === "My Account") {
       setShowAccountDropdown(!showAccountDropdown);
+    } else if (item.label === "Cart") {
+      if (currentUser) {
+        navigate(item.path);
+      } else {
+        setShowSignInPopup(true);
+      }
     } else {
       navigate(item.path);
     }
@@ -98,9 +123,9 @@ const Navbar = () => {
       // navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
     }
   };
-
+``
   return (
-    <nav className='px-[1rem] sm:px-[2rem] py-2 flex flex-wrap items-center justify-between bg-white relative'>
+    <nav className="px-[1rem] sm:px-[2rem] py-2 flex flex-wrap items-center justify-between bg-white relative">
       <Link to="/">
         <img src={logo} alt="Logo" className="w-[8rem]" />
       </Link>
@@ -109,7 +134,9 @@ const Navbar = () => {
         <div className="gap-2 flex items-center">
           <span>🇮🇳</span>
           <span>
-            {loadingLocation ? "Detecting location..." : `Deliver To ${location}`}
+            {loadingLocation
+              ? "Detecting location..."
+              : `Deliver To ${location}`}
           </span>
         </div>
         <FaPen
@@ -137,6 +164,8 @@ const Navbar = () => {
           <FaSearch
             className="text-gray-500 ml-2 cursor-pointer"
             onClick={handleSearch}
+            role="button"
+            aria-label="Search"
           />
         </div>
         <div
@@ -150,6 +179,8 @@ const Navbar = () => {
       <div className="hidden md:flex items-center gap-6 text-sm text-gray-700">
         {navItems.map((item, index) => {
           const Icon = item.icon;
+          const label =
+            item.label === "Sign In" && currentUser ? "My Account" : item.label;
 
           if (item.label === "More") {
             return (
@@ -160,23 +191,40 @@ const Navbar = () => {
                 onMouseLeave={() => setShowMore(false)}
               >
                 <Icon className="text-[1.3rem]" />
-                <span className="text-xs mt-1">{item.label}</span>
+                <span className="text-xs mt-1">{label}</span>
 
                 {showMore && (
                   <div className="absolute top-[2rem] right-0 bg-white border rounded shadow-lg text-left w-44 z-10">
-                    <Link to="/about" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                    <Link
+                      to="/about"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                    >
                       <FaUserCircle /> About Us
                     </Link>
-                    <Link to="/favourites" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                    <Link
+                      to="/favourites"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                    >
                       <FaHeart /> Favourites
                     </Link>
-                    <Link to="/contact" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                    <Link
+                      to="/contact"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                    >
                       <FaPhone /> Contact Us
                     </Link>
-                    <Link to="/faq" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                    <Link
+                      to="/faq"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                    >
                       <FaQuestionCircle /> FAQ
                     </Link>
-                    <a href="https://wa.me/9685553090" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                    <a
+                      href="https://wa.me/9685553090"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                    >
                       <FaWhatsapp /> WhatsApp
                     </a>
                   </div>
@@ -189,17 +237,29 @@ const Navbar = () => {
             <div
               key={index}
               className="relative flex flex-col items-center cursor-pointer"
-              onClick={() => handleNavItemClick(item)}
+              onClick={() => handleNavItemClick({ ...item, label })}
             >
               <Icon className="text-[1.3rem]" />
-              <span className="text-xs mt-1">{item.label}</span>
+              <span className="text-xs mt-1">{label}</span>
 
-              {item.label === "My Account" && showAccountDropdown && (
+              {label === "My Account" && showAccountDropdown && (
                 <div className="absolute top-[2rem] right-0 bg-white border rounded shadow-lg text-left w-44 z-10">
                   <div
                     onClick={() => {
-                      navigate(currentUser?.role === "admin" ? "/admin-dashboard" : "/user-dashboard");
+                      navigate(
+                        currentUser?.role === "admin"
+                          ? "/admin-dashboard"
+                          : "/user-dashboard"
+                      );
                       setShowAccountDropdown(false);
+
+                      const alreadyReloaded =
+                        localStorage.getItem("dashboardReloaded");
+
+                      if (!alreadyReloaded) {
+                        localStorage.setItem("dashboardReloaded", "true");
+                        window.location.reload();
+                      }
                     }}
                     className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer"
                   >
@@ -219,65 +279,136 @@ const Navbar = () => {
       </div>
 
       {showMobileMenu && (
-        <div className="flex flex-col bg-white shadow-md w-full mt-3 p-4 gap-3 text-gray-700 md:hidden">
-          {navItems.map((item, index) => {
-            const Icon = item.icon;
+  <div className="flex flex-col bg-white shadow-md w-full mt-3 p-4 gap-3 text-gray-700 md:hidden">
+    {navItems.map((item, index) => {
+      const Icon = item.icon;
+      const label =
+        item.label === "Sign In" && currentUser
+          ? "My Account"
+          : item.label;
 
-            if (item.label === "More") {
-              return (
-                <div key={index} className="flex flex-col gap-1">
-                  <div
-                    onClick={() => setShowMore(!showMore)}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <Icon />
-                    <span>{item.label}</span>
-                  </div>
-                  {showMore && (
-                    <div className="ml-5 flex flex-col gap-2">
-                      <Link to="/about" className="flex items-center gap-2 px-4  hover:bg-gray-100">
-                        <FaUserCircle /> About Us
-                      </Link>
-                      <Link to="/favourites" className="flex items-center gap-2 px-4  hover:bg-gray-100">
-                        <FaHeart /> Favourites
-                      </Link>
-                      <Link to="/contact" className="flex items-center gap-2 px-4  hover:bg-gray-100">
-                        <FaPhone /> Contact Us
-                      </Link>
-                      <Link to="/faq" className="flex items-center gap-2 px-4  hover:bg-gray-100">
-                        <FaQuestionCircle /> FAQ
-                      </Link>
-                      <a href="https://wa.me/9685553090" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4  hover:bg-gray-100">
-                        <FaWhatsapp /> WhatsApp
-                      </a>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-
-            return (
-              <div
-                key={index}
-                onClick={() => handleNavItemClick(item)}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <Icon />
-                <span>{item.label}</span>
+      if (item.label === "More") {
+        return (
+          <div key={index} className="flex flex-col gap-1">
+            <div
+              onClick={() => setShowMore(!showMore)}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <Icon />
+              <span>{label}</span>
+            </div>
+            {showMore && (
+              <div className="ml-5 flex flex-col gap-2">
+                <Link
+                  to="/about"
+                  className="flex items-center gap-2 px-4 hover:bg-gray-100"
+                >
+                  <FaUserCircle /> About Us
+                </Link>
+                <Link
+                  to="/favourites"
+                  className="flex items-center gap-2 px-4 hover:bg-gray-100"
+                >
+                  <FaHeart /> Favourites
+                </Link>
+                <Link
+                  to="/contact"
+                  className="flex items-center gap-2 px-4 hover:bg-gray-100"
+                >
+                  <FaPhone /> Contact Us
+                </Link>
+                <Link
+                  to="/faq"
+                  className="flex items-center gap-2 px-4 hover:bg-gray-100"
+                >
+                  <FaQuestionCircle /> FAQ
+                </Link>
+                <a
+                  href="https://wa.me/9685553090"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 hover:bg-gray-100"
+                >
+                  <FaWhatsapp /> WhatsApp
+                </a>
               </div>
-            );
-          })}
-        </div>
-      )}
+            )}
+          </div>
+        );
+      }
 
-      {showLocationPopup && <LocationPopup onClose={() => setShowLocationPopup(false)} />}
-      {showGiftFinderPopup && <GiftFinder onClose={() => setShowGiftFinderPopup(false)} />}
+      if (label === "My Account") {
+        return (
+          <div key={index} className="flex flex-col gap-1">
+            <div
+              onClick={() => setShowAccountDropdown(!showAccountDropdown)}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <Icon />
+              <span>{label}</span>
+            </div>
+            {showAccountDropdown && (
+              <div className="ml-5 flex flex-col gap-2">
+                <div
+                  onClick={() => {
+                    navigate(
+                      currentUser?.role === "admin"
+                        ? "/admin-dashboard"
+                        : "/user-dashboard"
+                    );
+                    setShowAccountDropdown(false);
+
+                    const alreadyReloaded =
+                      localStorage.getItem("dashboardReloaded");
+
+                    if (!alreadyReloaded) {
+                      localStorage.setItem("dashboardReloaded", "true");
+                      window.location.reload();
+                    }
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  Dashboard
+                </div>
+                <div
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  Logout
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      return (
+        <div
+          key={index}
+          onClick={() => handleNavItemClick({ ...item, label })}
+          className="flex items-center gap-2 cursor-pointer"
+        >
+          <Icon />
+          <span>{label}</span>
+        </div>
+      );
+    })}
+  </div>
+)}
+
+      {showLocationPopup && (
+        <LocationPopup onClose={() => setShowLocationPopup(false)} />
+      )}
+      {showGiftFinderPopup && (
+        <GiftFinder onClose={() => setShowGiftFinderPopup(false)} />
+      )}
       {showSignInPopup && (
         <SignIn
           onClose={() => setShowSignInPopup(false)}
           onSuccess={(user) => {
             setCurrentUser(user);
             localStorage.setItem("user", JSON.stringify(user));
+            if (user.token) localStorage.setItem("token", user.token);
             setShowSignInPopup(false);
           }}
         />

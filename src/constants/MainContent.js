@@ -12,12 +12,12 @@ export const MainContent = {
   address: "Shop NO.- 5 and 6, Plot no.130, Birla Mandir Rd, Near Malviya Complex, Roshanpura, Malviya Nagar, Bhopal, Madhya Pradesh 462003",
   telegram_link: "https://t.me/YourTelegramUsername",
 };
-
 export const backendConfig = {
 
-  base: "",
-  origin: "http://localhost:5173",
- 
+  // base: "http://192.168.1.17:5000",
+  // origin: "http://192.168.1.17:5000",
+  base: "http://10.122.55.184:5000",
+  origin: "http://10.122.55.184:5000",
 };
 export const Axios = axios.create({
   baseURL: backendConfig.base,

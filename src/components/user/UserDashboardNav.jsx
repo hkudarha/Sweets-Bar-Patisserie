@@ -1,44 +1,43 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { FaEnvelope, FaPhone, FaUserCircle, FaIdBadge } from "react-icons/fa";
 
 const UserDashboardNav = ({ user }) => {
-    const navigate = useNavigate();
+  if (!user) return null;
 
-    const handleLogout = () => {
-        localStorage.removeItem("user");
-        navigate("/");
+  return (
+    <div className="bg-white shadow sm:px-[8rem] border-t-1 border-gray-300 px-[2rem] py-4 flex flex-wrap md:flex-nowrap items-center justify-between rounded gap-4">
+      <div className="flex items-center gap-3">
+        {user.picture ? (
+          <img
+            src={user.picture}
+            alt={user.name}
+            className="w-[5rem] h-[5rem] rounded-full object-cover"
+          />
+        ) : (
+          <FaUserCircle className="text-5xl [#0e4d65]" />
+        )}
+        <h2 className="text-xl font-semibold">{user.name}</h2>
+      </div>
 
-    };
- 
+      <div className="flex items-center gap-1">
+        <FaEnvelope className="text-[#0e4d65]" />
+        <span>{user.email}</span>
+      </div>
 
-    return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow rounded">
-            <h2 className="text-2xl font-bold mb-4">Welcome, {user.name} 👋</h2>
-
-            {user.picture && (
-                <div className="mb-4">
-                    <img
-                        src={user.picture}
-                        alt={user.name}
-                        className="w-24 h-24 rounded-full mx-auto"
-                    />
-                </div>
-            )}
-
-            <div className="space-y-2 text-gray-700">
-                <p><strong>Name:</strong> {user.name}</p>
-                <p><strong>Email:</strong> {user.email}</p>
-                <p><strong>Role:</strong> {user.role}</p>
-            </div>
-
-            <button
-                onClick={handleLogout}
-                className="mt-6 w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-            >
-                Logout
-            </button>
+      {user.phone && (
+        <div className="flex items-center gap-1">
+          <FaPhone className="text-[#0e4d65]" />
+          <span>{user.phone}</span>
         </div>
-    );
+      )}
+
+      {user.role && (
+        <div className="flex items-center gap-1">
+          <FaIdBadge className="text-[#0e4d65]" />
+          <span className="capitalize">{user.role}</span>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default UserDashboardNav;

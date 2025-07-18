@@ -1,9 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import products from "./SalingCardsProducts.js";
 import { useState } from "react";
-import Swal from "sweetalert2";
 import CustomerImages from "./CustomerImages.jsx";
-
+import BuyNow from "./BuyNow.jsx";
+import AddToCart from "./AddToCart.jsx";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -14,26 +14,19 @@ const ProductDetails = () => {
   const [deliveryLocation, setDeliveryLocation] = useState("462002, Bhopal");
 
   if (!product) {
-    return <div className="text-center text-red-600 mt-8">Product not found</div>;
+    return (
+      <div className="text-center text-red-600 mt-8">Product not found</div>
+    );
   }
 
   const handleWeightChange = (weight) => {
     setSelectedWeight(weight);
   };
 
-  const handleBuyNow = () => {
-    Swal.fire({
-      title: "Success!",
-      text: "Your order has been placed.",
-      icon: "success",
-      confirmButtonText: "OK",
-    });
-  };
-
   return (
     <div className="max-w-7xl mx-auto sm:p-[4rem] p-[1rem]">
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Left: Image */}
+       
         <div className="md:w-1/2 relative">
           <div className="sticky top-4">
             <img
@@ -44,7 +37,7 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        {/* Right: Content */}
+        
         <div className="flex-1 sm:pr-[4rem] pr-[0rem]">
           <div className="max-h-screen overflow-y-auto pr-2 hide-scrollbar">
             <h1 className="text-3xl font-bold">{product.name}</h1>
@@ -53,23 +46,23 @@ const ProductDetails = () => {
               <span className="bg-green-600 text-white px-2 py-1 rounded text-sm">
                 {product.rating} ★
               </span>
-              <span className="text-gray-600 mt-[1rem]">({product.reviews} Reviews)</span>
+              <span className="text-gray-600 mt-[1rem]">
+                ({product.reviews} Reviews)
+              </span>
             </div>
 
             <p className="text-2xl font-semibold">₹ {product.price}</p>
             <p className="text-gray-500 mt-1">Delivery: {product.delivery}</p>
 
-            <div className="mt-6 flex gap-4 ">
-              <button
-                onClick={handleBuyNow}
-                className="cursor-pointer"
-              >
-                Buy Now
-              </button>
+            <div className="mt-6 flex flex-col md:flex-row items-center  gap-4">
+             <div className="flex gap-4  w-full">
+              <BuyNow productId={id}/>
+               <AddToCart />
+             </div>
 
               <Link
                 to="/"
-                className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
+                className="px-4 py-2  bg-gray-300 text-black rounded hover:bg-gray-400 text-center"
               >
                 Back to products
               </Link>
@@ -98,9 +91,10 @@ const ProductDetails = () => {
                         key={w}
                         onClick={() => handleWeightChange(w)}
                         className={`custom-button
-                          ${selectedWeight === w
-                            ? "bg-green-600 text-white border-green-600"
-                            : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                          ${
+                            selectedWeight === w
+                              ? "bg-green-600 text-white border-green-600"
+                              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
                           }`}
                       >
                         {w}
@@ -119,16 +113,15 @@ const ProductDetails = () => {
 
             <div>
               <h5 className="font-bold mt-[1rem]">Product Reviews</h5>
-               <div className="flex items-center gap-2  ">
-              <p className="  px-2 font-extrabold py-1 rounded !text-[1.5rem]">
-             <span className="text-yellow-500">  ★ {"  "}</span> {product.rating} 
-              </p>
-            </div>
-
+              <div className="flex items-center gap-2  ">
+                <p className="  px-2 font-extrabold py-1 rounded !text-[1.5rem]">
+                  <span className="text-yellow-500"> ★ {"  "}</span>{" "}
+                  {product.rating}
+                </p>
+              </div>
             </div>
 
             <CustomerImages />
-
 
             <div className="mt-8">
               <div className="border overflow-hidden border-gray-300 rounded-xl mb-6">

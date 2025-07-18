@@ -8,10 +8,16 @@ import Testimonial from './Home/Testimonial'
 import RelatedBlog from './Home/RelatedBlog'
 import ShopByOccasions from './Home/ShopByOccasions'
 import FlowerAura from './Home/FlowerAura'
+import Demo from './Home/Demo'
+import CreateProduct from './admin/products/CreateProduct'
+import AllProducts from './admin/products/AllProducts'
 
 const Home = () => {
   return (
     <div>
+      {/* <Demo/> */}
+      <AllProducts/>
+      <CreateProduct/>
       <CakeSwiper />
       <OnlineCakeDelivery />
       <ShopByOccasions />

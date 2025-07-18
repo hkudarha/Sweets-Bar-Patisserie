@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import RemoveCardItem from "../Popup/RemoveCardItem";
+import PlaceOrder from "../Cart/PlaceOrder";
 
 const CartItems = ({ cartItems, setCartItems }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [removingItems, setRemovingItems] = useState([]);
 
-  const handlePlaceOrder = () => {
-    Swal.fire({
-      icon: "success",
-      title: "Your order is successfully placed!",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
+  // const handlePlaceOrder = () => {
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Your order is successfully placed!",
+  //     showConfirmButton: false,
+  //     timer: 2000,
+  //   });
+  // };
 
   const incrementQty = (id) => {
     setCartItems((prev) =>
@@ -26,12 +28,22 @@ const CartItems = ({ cartItems, setCartItems }) => {
 
   const decrementQty = (id) => {
     setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
+      prev.map((item) => {
+        if (item.id === id) {
+          if (item.quantity === 1) {
+            setRemovingItems((rem) => [...rem, id]);
+            return item; 
+          }
+          return { ...item, quantity: item.quantity - 1 };
+        }
+        return item;
+      })
     );
+  };
+
+  const handleTransitionEnd = (id) => {
+    setCartItems((prev) => prev.filter((i) => i.id !== id));
+    setRemovingItems((rem) => rem.filter((r) => r !== id));
   };
 
   const openRemoveModal = (item) => {
@@ -56,7 +68,6 @@ const CartItems = ({ cartItems, setCartItems }) => {
 
   return (
     <>
-      {/* Only render cart if modal is NOT open */}
       {!modalOpen && (
         <div className="mx-auto px-[2rem] sm:px-[4rem] py-[2rem]">
           <div className="p-4 flex flex-col md:flex-row gap-4">
@@ -70,7 +81,13 @@ const CartItems = ({ cartItems, setCartItems }) => {
                   {cartItems.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between border-gray-300 border rounded-md p-2"
+                      className={`cart-item flex items-center justify-between border-gray-300 border rounded-md p-2 transition-all duration-500 overflow-hidden ${
+                        removingItems.includes(item.id) ? "is-removing" : ""
+                      }`}
+                      onTransitionEnd={() =>
+                        removingItems.includes(item.id) &&
+                        handleTransitionEnd(item.id)
+                      }
                     >
                       <div className="flex gap-3 items-center">
                         <img
@@ -139,19 +156,13 @@ const CartItems = ({ cartItems, setCartItems }) => {
                   <span>Grand Total</span>
                   <span>₹ {orderTotal}</span>
                 </div>
-                <button
-                  className="w-full bg-blue-900 text-white py-2 rounded"
-                  onClick={handlePlaceOrder}
-                >
-                  PLACE ORDER
-                </button>
+                
+                <PlaceOrder />
               </div>
             </div>
           </div>
         </div>
       )}
-
-      {/* Render modal when open */}
       {modalOpen && (
         <RemoveCardItem
           isOpen={modalOpen}

@@ -1,10 +1,8 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
-
 import 'swiper/css';
 import 'swiper/css/pagination';
-
 import img1 from "../../assets/Home/anniversary-cake-homepage-fa-desktop.avif";
 import img2 from "../../assets/Home/birthday-landingpage-fa-desktop.avif";
 import img3 from "../../assets/Home/chocolate-cake-landingpage-fa-desktop.avif";

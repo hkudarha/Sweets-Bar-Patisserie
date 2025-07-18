@@ -1,7 +1,8 @@
+// src/api/axiosInstance.js
 import axios from "axios";
 import { backendConfig } from "../constants/MainContent";
 
-const userApi = axios.create({
+const axiosInstance = axios.create({
   baseURL: backendConfig.base,
   timeout: 10000,
   headers: {
@@ -10,7 +11,7 @@ const userApi = axios.create({
   withCredentials: true,
 });
 
-userApi.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -21,7 +22,7 @@ userApi.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-userApi.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error("API Error:", error);
@@ -29,4 +30,4 @@ userApi.interceptors.response.use(
   }
 );
 
-export default userApi;
+export default axiosInstance;

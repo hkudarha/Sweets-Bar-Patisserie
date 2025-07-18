@@ -29,20 +29,21 @@ const SignIn = ({ onClose, onSuccess }) => {
       role: "user",
     };
 
-
+    // Save user & dummy token
     localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", "dummy-token-123456");
 
-    // 👇 Notify parent that login succeeded
-    onSuccess(userData);
     console.log("User logged in:", userData);
-    
+
+    onSuccess(userData);
   };
 
   const handleGoogleSuccess = (user) => {
     localStorage.setItem("user", JSON.stringify(user));
-    // 👇 Notify parent that login succeeded
-    console.log("User logged in:", user);
-    
+    localStorage.setItem("token", "dummy-token-123456");
+
+    console.log("User logged in (Google):", user);
+
     onSuccess(user);
   };
 

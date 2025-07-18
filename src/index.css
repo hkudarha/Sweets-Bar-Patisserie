@@ -51,8 +51,13 @@ button {
   color: white;
   border-radius: 10px;
   padding: 0.6rem 2rem;
+  cursor: pointer;
 }
-
+button:hover {
+  background-color: #ffffff;
+  color: #0c4a61;
+  border: 1px solid #0c4a61;
+}
 .input1 {
   width: 100%;
   border: 1px solid #d1d5db;
@@ -110,4 +115,25 @@ button {
   50% {
     opacity: 0;
   }
+}
+
+
+
+.cart-item {
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out, margin 0.4s ease-in-out;
+  transform: translateX(0);
+  opacity: 1;
+  margin-bottom: 0.75rem;
+}
+
+.cart-item.is-removing {
+  transform: translateX(-100%);
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+}
+
+h3{
+  font-size: 1.2rem;
+  font-weight: bold;
 }
